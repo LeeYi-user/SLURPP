@@ -196,13 +196,6 @@ cython_debug/
 
 **/.ipynb_checkpoints
 **/__pycache__
-*.png
-!doc/*.png
-!test_data/*.png
-*.jpg
-*.jpeg
-*.gif
-*.JPG
 *.mp4
 *.npz
 *.dae
