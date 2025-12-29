@@ -58,13 +58,13 @@ class DualUNetCondition( ModelMixin, ConfigMixin, FromOriginalModelMixin):
     def load_checkpoint(self, model_path1, model_path2, device="cuda"):
         # _model_path1 = os.path.join(ckpt_path, "unet1", "diffusion_pytorch_model.bin")
         self.model.unet1.load_state_dict(
-            torch.load(model_path1, map_location=device)
+            torch.load(model_path1, map_location=device, weights_only=False)
         )
         self.model.unet1.to(device)
 
         # _model_path2 = os.path.join(ckpt_path, "unet2", "diffusion_pytorch_model.bin")
         self.model.unet2.load_state_dict(
-            torch.load(model_path2, map_location=device)
+            torch.load(model_path2, map_location=device, weights_only=False)
         )
         self.model.unet2.to(device)
     

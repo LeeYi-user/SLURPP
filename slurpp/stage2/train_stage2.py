@@ -156,7 +156,7 @@ model.load_vae(autoencoder)
 #load checkpoint 
 checkpoint_path = args.checkpoint
 if checkpoint_path is not None:
-    checkpoint = torch.load(checkpoint_path)
+    checkpoint = torch.load(checkpoint_path, weights_only=False)
     model.load_state_dict(checkpoint['state_dict'])
     print(f"          ===> Checkpoint Loaded From: {checkpoint_path} ...")
     if args.preserve_encoder:

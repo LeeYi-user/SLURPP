@@ -48,6 +48,9 @@ class UnderwaterRealDataset(Dataset):
     def getitem(self, idx):
         u_img_name = self.image_files[idx]
         u_image = Image.open(u_img_name)
+        
+        # Store original size
+        original_size = u_image.size  # (width, height)
 
         if self.transform:
             u_image = self.transform(u_image) # underwater image
@@ -57,6 +60,7 @@ class UnderwaterRealDataset(Dataset):
 
         out['imgs']['u'] = u_image
         out['imgs']['name'] = os.path.splitext(os.path.basename(u_img_name))[0]
+        out['imgs']['original_size'] = original_size  # Store original size as (width, height)
 
         return out
 

@@ -103,8 +103,8 @@ class SlurppTrainer:
             self.model.unet.add_additional_params()
 
             if hasattr(self.cfg, "dual_load"):
-                self.model.unet.unet1.load_state_dict(torch.load(os.path.join(self.cfg.dual_load.unet1, 'diffusion_pytorch_model.bin')))
-                self.model.unet.unet2.load_state_dict(torch.load(os.path.join(self.cfg.dual_load.unet2, 'diffusion_pytorch_model.bin')))
+                self.model.unet.unet1.load_state_dict(torch.load(os.path.join(self.cfg.dual_load.unet1, 'diffusion_pytorch_model.bin'), weights_only=False))
+                self.model.unet.unet2.load_state_dict(torch.load(os.path.join(self.cfg.dual_load.unet2, 'diffusion_pytorch_model.bin'), weights_only=False))
 
             self.dual_loss_weight_1 = getattr(self.cfg, 'dual_loss_weight_1', 0.6)
         else:
@@ -895,14 +895,14 @@ class SlurppTrainer:
         # Load UNet
         _model_path = os.path.join(ckpt_path, "unet", "diffusion_pytorch_model.bin")
         self.model.unet.load_state_dict(
-            torch.load(_model_path, map_location=self.device)
+            torch.load(_model_path, map_location=self.device, weights_only=False)
         )
         self.model.unet.to(self.device)
         logging.info(f"UNet parameters are loaded from {_model_path}")
 
         # Load training states
         if load_trainer_state:
-            checkpoint = torch.load(os.path.join(ckpt_path, "trainer.ckpt"))
+            checkpoint = torch.load(os.path.join(ckpt_path, "trainer.ckpt"), weights_only=False)
             self.effective_iter = checkpoint["effective_iter"]
             self.epoch = checkpoint["epoch"]
             self.n_batch_in_epoch = checkpoint["n_batch_in_epoch"]

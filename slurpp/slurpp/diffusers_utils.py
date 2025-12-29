@@ -88,8 +88,8 @@ def load_stage1(model_path, checkpoint_path, cfg):
         pipe.unet.unet2 = _replace_unet_conv_in(pipe.unet.unet2 , len(inputs_fields2), len(outputs_fields2))
         pipe.unet.unet2 = _replace_unet_conv_out(pipe.unet.unet2 , len(outputs_fields2))
         pipe.unet.add_additional_params()
-        pipe.unet.unet1.load_state_dict(torch.load(os.path.join(checkpoint_path, 'unet1', 'diffusion_pytorch_model.bin')))
-        pipe.unet.unet2.load_state_dict(torch.load(os.path.join(checkpoint_path, 'unet2', 'diffusion_pytorch_model.bin')))
+        pipe.unet.unet1.load_state_dict(torch.load(os.path.join(checkpoint_path, 'unet1', 'diffusion_pytorch_model.bin'), weights_only=False))
+        pipe.unet.unet2.load_state_dict(torch.load(os.path.join(checkpoint_path, 'unet2', 'diffusion_pytorch_model.bin'), weights_only=False))
         inputs_fields = inputs_fields + inputs_fields2
         outputs_fields = outputs_fields + outputs_fields2 
     else:
@@ -97,6 +97,6 @@ def load_stage1(model_path, checkpoint_path, cfg):
         pipe.unet = _replace_unet_conv_in(pipe.unet, len(inputs_fields), len(outputs_fields))
         pipe.unet = _replace_unet_conv_out(pipe.unet, len(outputs_fields))
 
-        pipe.unet.load_state_dict(torch.load(os.path.join(checkpoint_path, 'unet', 'diffusion_pytorch_model.bin')))
+        pipe.unet.load_state_dict(torch.load(os.path.join(checkpoint_path, 'unet', 'diffusion_pytorch_model.bin'), weights_only=False))
 
     return pipe, inputs_fields, outputs_fields, dual

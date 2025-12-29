@@ -2,7 +2,7 @@ import torch
 from PIL import Image
 
 
-def save_image(path, tensor):
+def save_image(path, tensor, original_size=None):
     tensor = tensor.squeeze(0).cpu()
     tensor = torch.clamp(tensor, 0, 1)
 
@@ -13,6 +13,11 @@ def save_image(path, tensor):
         tensor = tensor.permute(1, 2, 0).numpy()
         tensor = (tensor * 255).astype('uint8')
         image = Image.fromarray(tensor)  # Create an RGB image
+        
+        # Resize to original size if provided
+        if original_size is not None:
+            image = image.resize(original_size, Image.LANCZOS)
+        
         image.save(path)
 
     elif tensor.size(0) == 1:
@@ -20,6 +25,11 @@ def save_image(path, tensor):
         tensor = tensor.squeeze(0).numpy()
         tensor = (tensor * 255).astype('uint8')
         image = Image.fromarray(tensor, mode='L')  # Create a grayscale image
+        
+        # Resize to original size if provided
+        if original_size is not None:
+            image = image.resize(original_size, Image.LANCZOS)
+        
         image.save(path)
     else:
         pass

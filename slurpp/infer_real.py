@@ -141,7 +141,7 @@ if "__main__" == __name__:
         from stage2 import  CrossLatentUNet
         model = CrossLatentUNet(config_path = f"{model_path}/vae/config.json")
         checkpoint_path = args.stage2_checkpoint
-        checkpoint = torch.load(checkpoint_path)
+        checkpoint = torch.load(checkpoint_path, weights_only=False)
         model.load_state_dict(checkpoint['state_dict'])
         model = model.to(device)
         print(f"          ===> Checkpoint Loaded From: {checkpoint_path} ...")
@@ -188,6 +188,9 @@ if "__main__" == __name__:
                 for field in inputs_fields:
                     inputs.append(batch["imgs"][field])
                 save_name = batch["imgs"]["name"][0]
+                original_size = batch["imgs"].get("original_size", None)
+                if original_size is not None:
+                    original_size = (original_size[0].item(), original_size[1].item())  # Convert from tensor to tuple (width, height)
 
                 for i in range(len(inputs)):
                     inputs[i] = normalize_imgs(inputs[i])
@@ -217,10 +220,10 @@ if "__main__" == __name__:
                 #save images
                 for i in range(len(outputs_fields)):
                     output_pred_gc = output_pred[i:i+1].clone()
-                    save_image(f"{save_to_dir}/{save_name}_{outputs_fields[i]}.png", output_pred_gc)
+                    save_image(f"{save_to_dir}/{save_name}_{outputs_fields[i]}.png", output_pred_gc, original_size=original_size)
 
                 composite_img = batch["imgs"][inputs_fields[0]]
                 composite_img = torch.clamp(composite_img, 0, 1).to(device)
 
-                save_image(f"{save_to_dir}/{save_name}_composite_img.png", composite_img)
+                save_image(f"{save_to_dir}/{save_name}_composite_img.png", composite_img, original_size=original_size)
                 
