@@ -16,6 +16,10 @@ Team: [Jiayi Wu](https://jiayi-wu-leo.github.io/), [Tianfu Wang](https://tianfwa
 	
 ## Install envrionment
 We use conda for our envrionment mangement, use the ```environment.yml``` file to install 
+```
+pip uninstall torch torchvision xformers -y
+pip install torch torchvision xformers
+```
 
 ## Inference 
 run ```python scripts/download_models.py``` to download pretrained models

@@ -8,7 +8,7 @@ os.makedirs(save_path, exist_ok=True)
 
 snapshot_download(repo_id=repo_id, local_dir=save_path)
 
-repo_id = "stabilityai/stable-diffusion-2"
+repo_id = "sd2-community/stable-diffusion-2"
 save_path = "./models/stable-diffusion-2"
 os.makedirs(save_path, exist_ok=True)
 
